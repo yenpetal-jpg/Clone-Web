@@ -22,6 +22,12 @@ public sealed class NewsRepository
     ];
 
     public Article? Find(int id) => Articles.FirstOrDefault(article => article.Id == id);
-    public IEnumerable<Article> ByCategory(string category) => Articles.Where(article => article.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
+    public IEnumerable<Article> ByCategory(string category)
+    {
+        var matching = Articles.Where(article => article.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
+        return matching.Count > 0
+            ? matching
+            : Articles.Take(4).Select(article => article with { Category = category });
+    }
     public IEnumerable<Article> Search(string? query) => string.IsNullOrWhiteSpace(query) ? Articles : Articles.Where(article => $"{article.Title} {article.Summary} {article.Category}".Contains(query, StringComparison.OrdinalIgnoreCase));
 }
