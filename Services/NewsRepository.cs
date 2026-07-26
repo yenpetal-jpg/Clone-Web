@@ -25,9 +25,12 @@ public sealed class NewsRepository
     public IEnumerable<Article> ByCategory(string category)
     {
         var matching = Articles.Where(article => article.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
-        return matching.Count > 0
-            ? matching
-            : Articles.Take(4).Select(article => article with { Category = category });
+        var remaining = Articles
+            .Where(article => !matching.Contains(article))
+            .Take(6 - matching.Count)
+            .Select(article => article with { Category = category });
+
+        return matching.Concat(remaining).Take(6);
     }
     public IEnumerable<Article> Search(string? query) => string.IsNullOrWhiteSpace(query) ? Articles : Articles.Where(article => $"{article.Title} {article.Summary} {article.Category}".Contains(query, StringComparison.OrdinalIgnoreCase));
 }
