@@ -1,0 +1,24 @@
+@inject NewsRepository News
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Tin Việt - tin tức, góc nhìn và nhịp sống mỗi ngày" />
+  <title>@ViewData["Title"] - Tin Việt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+  <div class="utility"><div class="shell utility-inner"><span>Thứ bảy, 26.07.2026</span><span>Đường dây nóng: <b>0909 123 456</b></span><a asp-controller="Home" asp-action="Login">Đăng nhập</a></div></div>
+  <header class="shell masthead">
+    <a class="brand" asp-controller="Home" asp-action="Index"><span>TIN</span><strong>VIỆT</strong><i>40</i></a>
+    <form class="search" asp-controller="Home" asp-action="Search" method="get"><input name="q" placeholder="Tìm kiếm tin tức" /><button aria-label="Tìm kiếm">⌕</button></form>
+  </header>
+  <nav class="nav"><div class="shell nav-inner"><a asp-controller="Home" asp-action="Index" class="home">⌂</a>@foreach (var category in News.Categories) { <a asp-controller="News" asp-action="Category" asp-route-category="@category">@category</a> }</div></nav>
+  <main>@RenderBody()</main>
+  <footer><div class="shell footer-grid"><div><a class="brand footer-brand" asp-controller="Home" asp-action="Index"><span>TIN</span><strong>VIỆT</strong><i>40</i></a><p>Nhịp sống Việt Nam qua những câu chuyện đáng đọc mỗi ngày.</p></div><div><h4>Chuyên mục</h4><p>@string.Join(" · ", News.Categories.Take(6))</p></div><div><h4>Liên hệ tòa soạn</h4><p>contact@tinviet.vn<br />0909 123 456</p></div></div><div class="shell copyright">© 2026 Tin Việt. Nội dung mô phỏng cho mục đích học tập.</div></footer>
+</body>
+</html>

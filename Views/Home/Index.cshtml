@@ -1,0 +1,13 @@
+@model NewsRepository
+@{ ViewData["Title"] = "Tin tức mới nhất"; var lead = Model.Articles.First(); var side = Model.Articles.Skip(1).Take(2).ToList(); var lower = Model.Articles.Skip(3).ToList(); }
+<div class="shell page">
+  <section class="topline"><span>Nhịp sống hôm nay</span><span>Thời tiết TP.HCM 28°C · Nhiều mây</span></section>
+  <section class="lead-grid">
+    <article class="lead-story"><a asp-controller="News" asp-action="Article" asp-route-id="@lead.Id"><img src="@lead.ImageUrl" alt="@lead.Title" /></a><div class="kicker">@lead.Category</div><h1><a asp-controller="News" asp-action="Article" asp-route-id="@lead.Id">@lead.Title</a></h1><p>@lead.Summary</p><span class="meta">@lead.PublishedAt · @lead.Author</span></article>
+    <aside class="side-stories">@foreach (var article in side) { <article class="small-story"><img src="@article.ImageUrl" alt="" /><div><div class="kicker">@article.Category</div><h2><a asp-controller="News" asp-action="Article" asp-route-id="@article.Id">@article.Title</a></h2><span class="meta">@article.PublishedAt</span></div></article> }</aside>
+    <aside class="latest"><h3>Mới nhất</h3>@foreach (var article in Model.Articles.TakeLast(4).Reverse()) { <a asp-controller="News" asp-action="Article" asp-route-id="@article.Id"><span>@article.Category</span>@article.Title</a> }</aside>
+  </section>
+  <section class="section-title"><h2>Chọn lọc</h2><a asp-controller="News" asp-action="Category" asp-route-category="Thời sự">Xem thêm →</a></section>
+  <section class="cards">@foreach (var article in lower) { <article class="card"><a asp-controller="News" asp-action="Article" asp-route-id="@article.Id"><img src="@article.ImageUrl" alt="@article.Title" /></a><div class="kicker">@article.Category</div><h2><a asp-controller="News" asp-action="Article" asp-route-id="@article.Id">@article.Title</a></h2><p>@article.Summary</p></article> }</section>
+  <section class="newsletter"><div><span class="kicker">Bản tin buổi sáng</span><h2>Những điều đáng biết, gửi đến bạn.</h2></div><form><input type="email" placeholder="Email của bạn" aria-label="Email của bạn" /><button type="button">Đăng ký</button></form></section>
+</div>
